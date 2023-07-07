@@ -25,7 +25,7 @@ public class Article {
     public int views;
     public String articleBody;
     public String heading;
-
+    public String displayBody;
     public String createdBy;
 
     public static String generateUniqueID() {

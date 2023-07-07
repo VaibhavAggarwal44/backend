@@ -28,7 +28,8 @@ public class UserController {
         boolean flag=userService.Checker(uid);
 
         if(flag){
-            return null;
+            User u=new User("AaA","AaA");
+            return u;
         }else{
             String sha256hex = Hashing.sha256()
                     .hashString(user1.getPassword(), StandardCharsets.UTF_8)
@@ -42,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@RequestBody User user) throws NoSuchElementException {
+    public User loginUser(@RequestBody User user) throws NoSuchElementException {
         String uid=user.getUsername();
         String upassword=user.getPassword();
         boolean flag= userService.Checker(uid);
@@ -50,16 +51,17 @@ public class UserController {
                 .hashString(upassword, StandardCharsets.UTF_8)
                 .toString();
 //        user1.setPassword(sha256hex);
+        User u2=new User("","");
         if(!flag){
-            return null;
+            return u2;
         }else{
             User u=userService.findById(uid);
             if(sha256hex.equals(u.getPassword())){
                 System.out.println("successfully logged in");
-                return "login success";
+                return u;
             }else{
                 System.out.println("incorrect password");
-                return "null";
+                return u2;
             }
         }
     }

@@ -123,7 +123,8 @@ public class ArticleController {
         return article;
     }
 
-    @PostMapping("/{id}")
+    @GetMapping("/{id}")
+    @CrossOrigin("http://localhost:3000/view/article")
     public Article updateArticleView(@PathVariable String id){
         Article article=articleService.findById(id);
         article=articleService.updateArticleViews(article,id);
