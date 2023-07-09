@@ -13,7 +13,7 @@ public class ArticleSearchUtil {
 
     public static MatchQuery matchAllQuery(String word){
         val matchAllQuery=new MatchQuery.Builder();
-        return matchAllQuery.field("articleBody").query(word).build();
+        return matchAllQuery.field("articleBody").query(word).fuzziness("1").build();
     }
 
     public static Supplier<Query> supplierQueryWithWord(String word){

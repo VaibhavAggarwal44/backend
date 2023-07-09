@@ -8,6 +8,7 @@ import com.example.VaibhavProject.service.ArticleSearchService;
 import com.example.VaibhavProject.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.MergedAnnotations;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -24,29 +25,30 @@ public class ArticleController {
     private ArticleSearchService articleSearchService;
 
     @GetMapping("/articles")
-    public Iterable<Article> getAllArticles(){
-        return articleService.getArticles();
+    public List<Article> getAllArticles(){
+        List<Article> list=articleService.findPublicArticles();
+        return list;
+    }
+
+    @GetMapping("/checker/{id}")
+    public List<Article> findByUsername(@PathVariable String id){
+        return articleService.findbyusername(id);
+    }
+
+    @GetMapping("/public/{query}")
+    public List<Article> findPublicArticles(@PathVariable String query){
+        String word=query.replace("--"," ");
+        return articleService.searchPublicArticles(word);
     }
 
     @GetMapping("/articles/sortLike")
-    public Iterable<Article> sortByLikes(){
-        Iterable<Article> list1=articleService.getArticles();
-        List<Article> list=new ArrayList<>();
+    public List<Article> sortByLikes(){
+        List<Article> list=articleService.findPublicArticles();
 
-        for(Article item:list1){
-            list.add(item);
-        }
-
-//        Collections.sort(list);list
         Article article=new Article();
         article.L_SORT(list);
 
-//        for(Article item:list){
-//            System.out.println(item);
-//        }
-
-        list1=list;
-        return list1;
+        return list;
     }
 
     @GetMapping("/articles/userArticles")
@@ -86,24 +88,13 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/sortView")
-    public Iterable<Article> sortByViews(){
-        Iterable<Article> list1=articleService.getArticles();
-        List<Article> list=new ArrayList<>();
+    public List<Article> sortByViews(){
+        List<Article> list=articleService.findPublicArticles();
 
-        for(Article item:list1){
-            list.add(item);
-        }
-
-//        Collections.sort(list);list
         Article article=new Article();
         article.V_SORT(list);
 
-//        for(Article item:list){
-//            System.out.println(item);
-//        }
-
-        list1=list;
-        return list1;
+        return list;
     }
 
     @PostMapping("/insert")

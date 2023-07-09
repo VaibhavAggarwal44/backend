@@ -6,10 +6,16 @@ import com.example.VaibhavProject.model.Article;
 import com.example.VaibhavProject.repository.ArticleRepo;
 import org.elasticsearch.client.RequestOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.Order;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +27,26 @@ import java.util.Map;
 public class ArticleService {
     @Autowired
     private ArticleRepo articleRepo;
+
+    public Page<Article> getById(String id){
+        System.out.println("checker");
+        Pageable pageable= PageRequest.of(0, 5, Sort.by(
+                Order.asc("createdBy")));
+
+        return articleRepo.findByName(id,pageable);
+    }
+
+    public List<Article> findbyusername(String id){
+        return articleRepo.findByCreatedBy(id);
+    }
+
+    public List<Article> searchPublicArticles(String query){
+        return articleRepo.findByArticleBodyAndIsPublic(query,true);
+    }
+
+    public List<Article> findPublicArticles(){
+        return articleRepo.findByIsPublic(true);
+    }
 
     public Iterable<Article> getArticles(){
         return articleRepo.findAll();
