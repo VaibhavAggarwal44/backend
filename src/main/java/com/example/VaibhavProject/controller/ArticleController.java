@@ -100,22 +100,26 @@ public class ArticleController {
     @PostMapping("/insert")
     public Article insertArticle(@RequestBody Article article){return articleService.insertArticle(article);}
 
-    @PostMapping("/{id}/like")
-    public Article updateArticleLike(@PathVariable String id){
+    @GetMapping("/{id}/{user}/{ld}")
+    public Article updateArticleLike(@PathVariable String id,@PathVariable String user,@PathVariable String ld){
+        System.out.println("check3");
         Article article=articleService.findById(id);
-        article=articleService.updateArticleLikes(article,id);
+        if(ld.equals("like"))
+            article=articleService.updateArticleLikes(article,id,user);
+        else if(ld.equals("dislike"))
+            article=articleService.updateArticleDislikes(article,id,user);
         return article;
     }
 
-    @PostMapping("/{id}/dislike")
-    public Article updateArticleDislike(@PathVariable String id){
-        Article article=articleService.findById(id);
-        article=articleService.updateArticleDislikes(article,id);
-        return article;
-    }
+//    @GetMapping("/dislike")
+//    public Article updateArticleDislike(@PathVariable String id,@PathVariable String dislikedby){
+//        System.out.println("check 2");
+//        Article article=articleService.findById(id);
+////        article=articleService.updateArticleDislikes(article,id,dislikedby);
+//        return article;
+//    }
 
     @GetMapping("/{id}")
-    @CrossOrigin("http://localhost:3000/view/article")
     public Article updateArticleView(@PathVariable String id){
         Article article=articleService.findById(id);
         article=articleService.updateArticleViews(article,id);

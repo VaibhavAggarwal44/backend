@@ -58,17 +58,42 @@ public class ArticleService {
 
     public Article findById(String id){return articleRepo.findById(id).get();}
 
-    public Article updateArticleLikes(Article article, String id) {
+    public Article updateArticleLikes(Article article, String id,String likedBy) {
         Article article1  = articleRepo.findById(id).get();
+        if(article1.getLikedBy().contains(likedBy)){
+            return article1;
+        }
+        if(article1.getDislikedBy().contains(likedBy)){
+            article1.setDislikes(article1.getDislikes()-1);
+        }
         article1.setLikes(article.getLikes()+1);
+        String s=article1.getLikedBy();
+        s+=likedBy+" ";
+        article1.setLikedBy(s);
+        String s2=article1.getDislikedBy();
+        String replace = s2.replace(likedBy+" ", " ");
+        article1.setDislikedBy(replace);
         article=article1;
         articleRepo.save(article);
         return article;
     }
 
-    public Article updateArticleDislikes(Article article, String id) {
+    public Article updateArticleDislikes(Article article, String id,String dislikedBy) {
+        System.out.println("check");
         Article article1  = articleRepo.findById(id).get();
-        article1.setLikes(article.getLikes()-1);
+        if(article1.getDislikedBy().contains(dislikedBy)){
+            return article1;
+        }
+        if(article1.getLikedBy().contains(dislikedBy)){
+            article1.setLikes(article1.getLikes()-1);
+        }
+        article1.setDislikes(article.getDislikes()+1);
+        String s=article1.getDislikedBy();
+        s+=dislikedBy+" ";
+        article1.setDislikedBy(s);
+        String s2=article1.getLikedBy();
+        String replace = s2.replace(dislikedBy+" ", " ");
+        article1.setLikedBy(replace);
         article=article1;
         articleRepo.save(article);
         return article1;

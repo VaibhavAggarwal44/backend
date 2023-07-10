@@ -20,13 +20,15 @@ public class Article {
 //    public int id;
     public String id;
     public int likes;
-//    public int dislikes;
+    public int dislikes;
     public boolean isPublic;
     public int views;
     public String articleBody;
     public String heading;
     public String displayBody;
     public String createdBy;
+    public String likedBy;
+    public String dislikedBy;
 
     public static String generateUniqueID() {
         // Generate a random UUID (Universally Unique Identifier)
@@ -39,6 +41,8 @@ public class Article {
     }
 
     public Article(){
+        this.likedBy="";
+        this.dislikedBy="";
         this.id=generateUniqueID();
     }
 
