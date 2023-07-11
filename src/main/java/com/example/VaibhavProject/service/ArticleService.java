@@ -71,7 +71,7 @@ public class ArticleService {
         s+=likedBy+" ";
         article1.setLikedBy(s);
         String s2=article1.getDislikedBy();
-        String replace = s2.replace(likedBy+" ", " ");
+        String replace = s2.replace(likedBy+" ", "");
         article1.setDislikedBy(replace);
         article=article1;
         articleRepo.save(article);
@@ -92,7 +92,7 @@ public class ArticleService {
         s+=dislikedBy+" ";
         article1.setDislikedBy(s);
         String s2=article1.getLikedBy();
-        String replace = s2.replace(dislikedBy+" ", " ");
+        String replace = s2.replace(dislikedBy+" ", "");
         article1.setLikedBy(replace);
         article=article1;
         articleRepo.save(article);
@@ -106,6 +106,11 @@ public class ArticleService {
         article=article1;
         articleRepo.save(article);
         return article1;
+    }
+
+    public Article updateArticle(Article article) {
+        articleRepo.save(article);
+        return article;
     }
 
     private ElasticsearchOperations elasticsearchOperations;

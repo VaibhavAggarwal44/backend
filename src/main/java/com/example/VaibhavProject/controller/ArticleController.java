@@ -100,6 +100,9 @@ public class ArticleController {
     @PostMapping("/insert")
     public Article insertArticle(@RequestBody Article article){return articleService.insertArticle(article);}
 
+    @PostMapping("/update")
+    public Article updateArticle(@RequestBody Article article){return articleService.updateArticle(article);}
+
     @GetMapping("/{id}/{user}/{ld}")
     public Article updateArticleLike(@PathVariable String id,@PathVariable String user,@PathVariable String ld){
         System.out.println("check3");
