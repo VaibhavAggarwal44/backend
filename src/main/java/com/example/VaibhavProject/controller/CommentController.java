@@ -13,9 +13,19 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    @GetMapping("/comments")
+    public Iterable<Comment> allComments(){
+        return commentService.getAllComments();
+    }
+
     @PostMapping("/insert")
     public Comment createComment(@RequestBody Comment comment){
         return commentService.insertComment(comment);
+    }
+
+    @GetMapping("/delete/{commentId}")
+    public void deleteComment(@PathVariable String commentId){
+        commentService.deleteComment(commentId);
     }
 
     @PostMapping("/{commentId}/insert")
@@ -26,5 +36,10 @@ public class CommentController {
     @GetMapping("/{articleId}")
     public List<Comment> getComments(@PathVariable String articleId){
         return commentService.findArticles(articleId);
+    }
+
+    @GetMapping("/allcom")
+    public Iterable<Comment> getAllComments(){
+        return commentService.getAllComments();
     }
 }
