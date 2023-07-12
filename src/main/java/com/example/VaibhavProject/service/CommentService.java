@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class CommentService {
@@ -15,6 +16,10 @@ public class CommentService {
 
     public Iterable<Comment> getAllComments(){
         return commentRepo.findAll();
+    }
+
+    public Comment findbyid(String id) throws NoSuchElementException {
+        return commentRepo.findById(id).get();
     }
 
     public Comment insertComment(Comment comment){

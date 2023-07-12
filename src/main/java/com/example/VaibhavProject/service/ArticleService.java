@@ -108,6 +108,14 @@ public class ArticleService {
         return article1;
     }
 
+    public void updateArticleViewsTest(Article article, String id) {
+        Article article1  = articleRepo.findById(id).get();
+        article1.setViews(article.getViews()-1);
+        article=article1;
+        articleRepo.save(article);
+        return ;
+    }
+
     public Article updateArticle(Article article) {
         articleRepo.save(article);
         return article;

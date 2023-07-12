@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("/comment")
 public class CommentController {
@@ -36,6 +37,11 @@ public class CommentController {
     @GetMapping("/{articleId}")
     public List<Comment> getComments(@PathVariable String articleId){
         return commentService.findArticles(articleId);
+    }
+
+    @GetMapping("/{commentId}/f")
+    public Comment getcommentbyid(@PathVariable String commentId){
+        return commentService.findbyid(commentId);
     }
 
     @GetMapping("/allcom")

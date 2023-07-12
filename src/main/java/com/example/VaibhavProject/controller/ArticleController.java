@@ -129,6 +129,13 @@ public class ArticleController {
         return article;
     }
 
+    @GetMapping("/{id}/tester")
+    public void updateViewTest(@PathVariable String id){
+        Article article=articleService.findById(id);
+        articleService.updateArticleViewsTest(article,id);
+        return ;
+    }
+
 //    @GetMapping("/matchAll")
 //    public String matchAll() throws IOException {
 //        SearchResponse<Map> searchResponse=articleSearchService.matchAllService();
