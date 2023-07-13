@@ -167,13 +167,13 @@ public class ArticleController {
             SearchResponse<Article> searchResponse = articleSearchService.matchArticleWithWordService(word);
             System.out.println(searchResponse.hits().hits().toString());
             List<Hit<Article>> listOfHits = searchResponse.hits().hits();
-            List<Article> list = new ArrayList<>();
-            int i = 0;
-            for (Hit<Article> item : listOfHits) {
-                if (i == 10) break;
-                i++;
-                list.add(item.source());
-            }
+            List<Article> list = infixFinder(word);
+//            int i = 0;
+//            for (Hit<Article> item : listOfHits) {
+//                if (i == 10) break;
+//                i++;
+//                list.add(item.source());
+//            }
             return list;
         }else{
             String query=word.replace("--"," ");
@@ -190,6 +190,16 @@ public class ArticleController {
             return list;
 
         }
+    }
+
+    @GetMapping("/infix/{query}")
+    public List<Article> infixFinder(@PathVariable String query){
+        return articleService.infixFinder(query);
+    }
+
+    @GetMapping("/{username}/getPublic")
+    public List<Article> getArticlesByUsername(@PathVariable String username){
+        return articleService.findArticlesByUsername(username);
     }
 
     @GetMapping("/articles/privateArticles")

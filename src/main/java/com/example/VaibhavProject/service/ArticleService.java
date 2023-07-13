@@ -58,6 +58,10 @@ public class ArticleService {
 
     public Article findById(String id){return articleRepo.findById(id).get();}
 
+    public List<Article> findArticlesByUsername(String username){return articleRepo.findByCreatedByAndIsPublic(username,true);}
+
+    public List<Article> infixFinder(String query){return articleRepo.findByArticleBodyContainingAndIsPublic(query,true);}
+
     public Article updateArticleLikes(Article article, String id,String likedBy) {
         Article article1  = articleRepo.findById(id).get();
         if(article1.getLikedBy().contains(likedBy)){

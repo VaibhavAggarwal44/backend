@@ -20,4 +20,8 @@ public interface ArticleRepo extends ElasticsearchRepository<Article,String> {
     List<Article> findByCreatedBy(String name);
     List<Article> findByArticleBodyAndIsPublic(String query,boolean isPublic);
     List<Article> findByIsPublic(boolean isPublic);
+
+    List<Article> findByCreatedByAndIsPublic(String createdBy,boolean isPublic);
+
+    List<Article> findByArticleBodyContainingAndIsPublic(String s,boolean isPublic);
 }
