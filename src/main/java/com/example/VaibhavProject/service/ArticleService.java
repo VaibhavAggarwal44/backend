@@ -44,8 +44,8 @@ public class ArticleService {
         return articleRepo.findByArticleBodyAndIsPublic(query,true);
     }
 
-    public List<Article> findPublicArticles(){
-        return articleRepo.findByIsPublic(true);
+    public List<Article> findPublicArticles(String s){
+        return articleRepo.findByIsPublicOrCreatedBy(true,s);
     }
 
     public Iterable<Article> getArticles(){

@@ -24,11 +24,11 @@ public class ArticleController {
     @Autowired
     private ArticleSearchService articleSearchService;
 
-    @GetMapping("/articles")
-    public List<Article> getAllArticles(){
-        List<Article> list=articleService.findPublicArticles();
-        return list;
-    }
+//    @GetMapping("/articles")
+//    public List<Article> getAllArticles(){
+//        List<Article> list=articleService.findPublicArticles();
+//        return list;
+//    }
 
     @GetMapping("/checker/{id}")
     public List<Article> findByUsername(@PathVariable String id){
@@ -41,9 +41,9 @@ public class ArticleController {
         return articleService.searchPublicArticles(word);
     }
 
-    @GetMapping("/articles/sortLike")
-    public List<Article> sortByLikes(){
-        List<Article> list=articleService.findPublicArticles();
+    @GetMapping("/articles/sortLike/{username}")
+    public List<Article> sortByLikes(@PathVariable String username){
+        List<Article> list=articleService.findPublicArticles(username);
 
         Article article=new Article();
         article.L_SORT(list);
@@ -87,9 +87,9 @@ public class ArticleController {
         return list1;
     }
 
-    @GetMapping("/articles/sortView")
-    public List<Article> sortByViews(){
-        List<Article> list=articleService.findPublicArticles();
+    @GetMapping("/articles/sortView/{username}")
+    public List<Article> sortByViews(@PathVariable String username){
+        List<Article> list=articleService.findPublicArticles(username);
 
         Article article=new Article();
         article.V_SORT(list);
@@ -168,13 +168,25 @@ public class ArticleController {
             System.out.println(searchResponse.hits().hits().toString());
             List<Hit<Article>> listOfHits = searchResponse.hits().hits();
             List<Article> list = infixFinder(word);
+            if(list.isEmpty()){
+                int i = 0;
+                for (Hit<Article> item : listOfHits) {
+                    if (i == 10) break;
+                    i++;
+                    list.add(item.source());
+                }
+                System.out.println("damn");
+                return list;
+            }else{
+                return list;
+            }
 //            int i = 0;
 //            for (Hit<Article> item : listOfHits) {
 //                if (i == 10) break;
 //                i++;
 //                list.add(item.source());
 //            }
-            return list;
+//            return list;
         }else{
             String query=word.replace("--"," ");
             SearchResponse<Article> searchResponse = articleSearchService.matchAllArticleService(query);
