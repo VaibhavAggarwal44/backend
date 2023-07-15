@@ -161,44 +161,66 @@ public class ArticleController {
 //        return list;
 //    }
 
-    @GetMapping("/search/{word}")
-    public List<Article> searchArticlesWithWord(@PathVariable String word) throws IOException {
+    @GetMapping("/search/{word}/{username}")
+    public List<Article> searchArticlesWithWord(@PathVariable String word,@PathVariable String username) throws IOException {
         if(!word.contains("--")) {
             SearchResponse<Article> searchResponse = articleSearchService.matchArticleWithWordService(word);
             System.out.println(searchResponse.hits().hits().toString());
-            List<Hit<Article>> listOfHits = searchResponse.hits().hits();
-            List<Article> list = infixFinder(word);
-            if(list.isEmpty()){
-                int i = 0;
+            List<Hit<Article>> listOfHits = searchResponse.hits().hits(); //fuzzy
+            List<Article> hlist=articleService.headingInfix(word);  //heading and ispublic
+            List<Article> hlist2=articleService.headingInfix2(word,username); //heading and username
+            List<Article> list = infixFinder(word);  //articlebody and ispublic
+            List<Article> list2=articleService.infixFinder2(word,username);  //articlebody and username
+
+            hlist.addAll(hlist2);
+            hlist.addAll(list2);
+            hlist.addAll(list);
+
+            Set<Article> set=new LinkedHashSet<>(hlist);
+            hlist.clear();
+            hlist.addAll(set);
+
+            if(hlist.isEmpty()){
                 for (Hit<Article> item : listOfHits) {
-                    if (i == 10) break;
-                    i++;
-                    list.add(item.source());
+                    hlist.add(item.source());
                 }
                 System.out.println("damn");
-                return list;
+                return hlist;
             }else{
-                return list;
+                return hlist;
             }
-//            int i = 0;
-//            for (Hit<Article> item : listOfHits) {
-//                if (i == 10) break;
-//                i++;
-//                list.add(item.source());
-//            }
-//            return list;
         }else{
             String query=word.replace("--"," ");
             SearchResponse<Article> searchResponse = articleSearchService.matchAllArticleService(query);
-            System.out.println(searchResponse.hits().hits().toString());
+            SearchResponse<Article> searchResponse2=articleSearchService.matchAllHeadingService(query);
+//            System.out.println(searchResponse.hits().hits().toString());
             List<Hit<Article>> listOfHits = searchResponse.hits().hits();
+            List<Hit<Article>> listOfHits2 = searchResponse2.hits().hits();
+            System.out.println("contension");
+//            listOfHits2.addAll(listOfHits);
+
+//            Set<Hit<Article>> set=new HashSet<>(listOfHits2);
+//            listOfHits2.clear();
+//            listOfHits2.addAll(set);
+
             List<Article> list = new ArrayList<>();
-            int i = 0;
-            for (Hit<Article> item : listOfHits) {
-                if (i == 10) break;
-                i++;
+//            int i = 0;
+            for (Hit<Article> item : listOfHits2) {
+//                if (i == 10) break;
+//                i++;
                 list.add(item.source());
             }
+
+            for (Hit<Article> item : listOfHits) {
+//                if (i == 10) break;
+//                i++;
+                list.add(item.source());
+            }
+
+            Set<Article> set=new LinkedHashSet<>(list);
+            list.clear();
+            list.addAll(set);
+
             return list;
 
         }

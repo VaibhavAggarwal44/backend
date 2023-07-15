@@ -16,6 +16,16 @@ public class ArticleSearchUtil {
         return matchAllQuery.field("articleBody").query(word).fuzziness("1").build();
     }
 
+    public static Supplier<Query> supplier2(String word){
+        Supplier<Query> supplier=()->Query.of(q->q.match(matchAllQueryHeading(word)));
+        return supplier;
+    }
+
+    public static MatchQuery matchAllQueryHeading(String word){
+        val matchAllQuery=new MatchQuery.Builder();
+        return matchAllQuery.field("heading").query(word).fuzziness("1").build();
+    }
+
     public static Supplier<Query> supplierQueryWithWord(String word){
         Supplier<Query> supplier=()->Query.of(q->q.fuzzy(matchAllQueryWithWord(word)));
         return supplier;

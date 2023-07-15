@@ -38,4 +38,11 @@ public class ArticleSearchService {
         System.out.println("elasaticsearch query is: "+supplier.get().toString());
         return searchResponse;
     }
+
+    public SearchResponse<Article> matchAllHeadingService(String word) throws IOException  {
+        Supplier<Query> supplier= ArticleSearchUtil.supplier2(word);
+        SearchResponse<Article> searchResponse=elasticsearchClient.search(s->s.index("article1").query(supplier.get()),Article.class);
+        System.out.println("elasaticsearch query is: "+supplier.get().toString());
+        return searchResponse;
+    }
 }
