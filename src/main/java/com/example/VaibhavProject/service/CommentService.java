@@ -24,7 +24,8 @@ public class CommentService {
 
     public Comment insertComment(Comment comment){
         comment.setParentComment(true);
-        return commentRepo.save(comment);}
+        return commentRepo.save(comment);
+    }
 
     public List<Comment> findArticles(String articleId){
         return commentRepo.findByArticleIdAndParentComment(articleId,true);
@@ -41,7 +42,9 @@ public class CommentService {
     public Comment insertReply(Comment reply,String commentId){
         Comment comment=commentRepo.findById(commentId).get();
         comment.getReplies().add(reply);
+
         reply.setParentComment(false);
+
         commentRepo.save(comment);
         commentRepo.save(reply);
         return reply;

@@ -18,13 +18,6 @@ public class ArticleSearchService {
     @Autowired
     private ElasticsearchClient elasticsearchClient;
 
-//    public SearchResponse<Map> matchAllService(String word) throws IOException  {
-//        Supplier<Query> supplier= ArticleSearchUtil.supplier(word);
-//        SearchResponse<Map> searchResponse=elasticsearchClient.search(s->s.query(supplier.get()),Map.class);
-//        System.out.println("elasaticsearch query is: "+supplier.get().toString());
-//        return searchResponse;
-//    }
-
     public SearchResponse<Article> matchAllArticleService(String word) throws IOException  {
         Supplier<Query> supplier= ArticleSearchUtil.supplier(word);
         SearchResponse<Article> searchResponse=elasticsearchClient.search(s->s.index("article1").query(supplier.get()),Article.class);

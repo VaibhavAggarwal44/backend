@@ -24,11 +24,11 @@ public class ArticleController {
     @Autowired
     private ArticleSearchService articleSearchService;
 
-//    @GetMapping("/articles")
-//    public List<Article> getAllArticles(){
-//        List<Article> list=articleService.findPublicArticles();
-//        return list;
-//    }
+    @GetMapping("/articles")
+    public List<Article> getAllArticles(){
+        List<Article> list=articleService.findPublicArticles("");
+        return list;
+    }
 
     @GetMapping("/checker/{id}")
     public List<Article> findByUsername(@PathVariable String id){
@@ -75,13 +75,8 @@ public class ArticleController {
             list.add(item);
         }
 
-//        Collections.sort(list);list
         Article article=new Article();
         article.D_SORT(list);
-
-//        for(Article item:list){
-//            System.out.println(item);
-//        }
 
         list1=list;
         return list1;
@@ -114,14 +109,6 @@ public class ArticleController {
         return article;
     }
 
-//    @GetMapping("/dislike")
-//    public Article updateArticleDislike(@PathVariable String id,@PathVariable String dislikedby){
-//        System.out.println("check 2");
-//        Article article=articleService.findById(id);
-////        article=articleService.updateArticleDislikes(article,id,dislikedby);
-//        return article;
-//    }
-
     @GetMapping("/{id}")
     public Article updateArticleView(@PathVariable String id){
         Article article=articleService.findById(id);
@@ -136,30 +123,12 @@ public class ArticleController {
         return ;
     }
 
-//    @GetMapping("/matchAll")
-//    public String matchAll() throws IOException {
-//        SearchResponse<Map> searchResponse=articleSearchService.matchAllService();
-//        System.out.println(searchResponse.hits().hits().toString());
-//        return searchResponse.hits().hits().toString();
-//    }
 
     @PostMapping("/final/delete")
     public void deleteAll() {
 //        Article article;
         articleService.deleteArticle();
     }
-
-//    @GetMapping("/matchAllArticles")
-//    public List<Article> matchAllArticles() throws IOException {
-//        SearchResponse<Article> searchResponse=articleSearchService.matchAllArticleService();
-//        System.out.println(searchResponse.hits().hits().toString());
-//        List<Hit<Article>> listOfHits=searchResponse.hits().hits();
-//        List<Article> list=new ArrayList<>();
-//        for(Hit<Article> item:listOfHits){
-//            list.add(item.source());
-//        }
-//        return list;
-//    }
 
     @GetMapping("/search/{word}/{username}")
     public List<Article> searchArticlesWithWord(@PathVariable String word,@PathVariable String username) throws IOException {
@@ -193,27 +162,18 @@ public class ArticleController {
             String query=word.replace("--"," ");
             SearchResponse<Article> searchResponse = articleSearchService.matchAllArticleService(query);
             SearchResponse<Article> searchResponse2=articleSearchService.matchAllHeadingService(query);
-//            System.out.println(searchResponse.hits().hits().toString());
+            System.out.println(searchResponse.hits().hits().toString());
             List<Hit<Article>> listOfHits = searchResponse.hits().hits();
             List<Hit<Article>> listOfHits2 = searchResponse2.hits().hits();
             System.out.println("contension");
-//            listOfHits2.addAll(listOfHits);
-
-//            Set<Hit<Article>> set=new HashSet<>(listOfHits2);
-//            listOfHits2.clear();
-//            listOfHits2.addAll(set);
 
             List<Article> list = new ArrayList<>();
-//            int i = 0;
+
             for (Hit<Article> item : listOfHits2) {
-//                if (i == 10) break;
-//                i++;
                 list.add(item.source());
             }
 
             for (Hit<Article> item : listOfHits) {
-//                if (i == 10) break;
-//                i++;
                 list.add(item.source());
             }
 

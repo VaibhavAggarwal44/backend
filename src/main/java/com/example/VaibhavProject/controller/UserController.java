@@ -38,8 +38,6 @@ public class UserController {
             return userService.insertUser(user1);
         }
 
-
-//        return null;
     }
 
     @PostMapping("/login")
@@ -50,7 +48,6 @@ public class UserController {
         String sha256hex=Hashing.sha256()
                 .hashString(upassword, StandardCharsets.UTF_8)
                 .toString();
-//        user1.setPassword(sha256hex);
         User u2=new User("","");
         if(!flag){
             return u2;
@@ -65,7 +62,5 @@ public class UserController {
             }
         }
     }
-
-
 
 }
