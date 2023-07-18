@@ -92,12 +92,32 @@ public class ArticleController {
         return list;
     }
 
+    /**
+     * This function helps us insert article recieved in request body in our
+     * elasticsearch database. Article is returned as inserted.
+     * @param article
+     */
     @PostMapping("/insert")
-    public Article insertArticle(@RequestBody Article article){return articleService.insertArticle(article);}
+    public Article insertArticle(@RequestBody Article article){
+        return articleService.insertArticle(article);
+    }
 
+    /**
+     * This function is to update article details as recieved as RequestBody.
+     * @param article
+     */
     @PostMapping("/update")
-    public Article updateArticle(@RequestBody Article article){return articleService.updateArticle(article);}
+    public Article updateArticle(@RequestBody Article article){
+        return articleService.updateArticle(article);
+    }
 
+    /**
+     * This function helps us update likes or dislikes of an article. id is article id, user is the username
+     * and ld is like or dislike whichever we are performing.
+     * @param id
+     * @param user
+     * @param ld
+     */
     @GetMapping("/{id}/{user}/{ld}")
     public Article updateArticleLike(@PathVariable String id,@PathVariable String user,@PathVariable String ld){
         System.out.println("check3");
@@ -109,6 +129,11 @@ public class ArticleController {
         return article;
     }
 
+    /**
+     * This function returns an article with given article id passed as PathVariable.
+     * It also increases its views by 1.
+     * @param id
+     */
     @GetMapping("/{id}")
     public Article updateArticleView(@PathVariable String id){
         Article article=articleService.findById(id);
@@ -116,6 +141,12 @@ public class ArticleController {
         return article;
     }
 
+    /**
+     * This function decreases views of an article by 1 and updates it.
+     * It was created because our frontend refreshes on inserting a reply to
+     * a comment and to keep the number of views same, they had to be decreased by 1.
+     * @param id
+     */
     @GetMapping("/{id}/tester")
     public void updateViewTest(@PathVariable String id){
         Article article=articleService.findById(id);
@@ -123,13 +154,25 @@ public class ArticleController {
         return ;
     }
 
-
+    /**
+     * this function lets us delete all articles
+     */
     @PostMapping("/final/delete")
     public void deleteAll() {
-//        Article article;
         articleService.deleteArticle();
     }
 
+
+    /**
+     * This function helps us to perform single and multisearch query. Single search query can perform substring matching
+     * or if no substring match is found then fuzzy search (with a fuzziness of 2 ) is performed. In multiword search ,we
+     * find if all or some words are present in the article. Search is performed on heading and articleBody. Username is passed
+     * to search from user's private articles.
+     * @param word
+     * @param username
+     * @return list of articles
+     * @throws IOException
+     */
     @GetMapping("/search/{word}/{username}")
     public List<Article> searchArticlesWithWord(@PathVariable String word,@PathVariable String username) throws IOException {
         if(!word.contains("--")) {
@@ -186,16 +229,30 @@ public class ArticleController {
         }
     }
 
+    /**
+     * This function helps us to perform 'containing' query on articleBody. It returns a list of
+     * articles that contain a substring 'query' in articleBody.
+     * @param query
+     * @return list
+     */
     @GetMapping("/infix/{query}")
     public List<Article> infixFinder(@PathVariable String query){
         return articleService.infixFinder(query);
     }
 
+    /**
+     * This function returns list of articles that are created by 'username' and are public.
+     * @param username
+     */
     @GetMapping("/{username}/getPublic")
     public List<Article> getArticlesByUsername(@PathVariable String username){
         return articleService.findArticlesByUsername(username);
     }
 
+    /**
+     * This function returns a Iterable list of article that contain all
+     * the private articles. This function was made only for testing purposes.
+     */
     @GetMapping("/articles/privateArticles")
     public Iterable<Article> privateArticles(){
         Iterable<Article> list1=articleService.getArticles();

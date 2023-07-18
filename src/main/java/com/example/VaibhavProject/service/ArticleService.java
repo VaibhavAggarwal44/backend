@@ -18,10 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ArticleService {
@@ -52,11 +49,11 @@ public class ArticleService {
         return articleRepo.findAll();
     }
 
-    public Article insertArticle(Article article){
+    public Article insertArticle(Article article) {
         return articleRepo.save(article);
     }
 
-    public Article findById(String id){
+    public Article findById(String id) throws NoSuchElementException {
         return articleRepo.findById(id).get();
     }
 
@@ -158,7 +155,6 @@ public class ArticleService {
         articleRepo.save(article);
         return article;
     }
-
 
     public void deleteArticle(){
         articleRepo.deleteAll();
